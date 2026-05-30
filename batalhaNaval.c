@@ -6,22 +6,46 @@
 int tabuleiro[10][10] = {0};
 
 void posicionaNavio(int linha, int coluna, int orientacao) {
-    if(orientacao == 0) {
+    if(orientacao == 0) { // horizontal
         for(int i = coluna; i < coluna + 3; i ++){
-           if(coluna < 8) {
+           if(coluna <= 8) {
             tabuleiro[linha][i] == 0 ? tabuleiro[linha][i] = 3 : printf("Você não pode sobrepor barcos\n\n");
            } else {
             printf("Valor superior ao tamanho do barco, tente novamente\n\n");
            }
         }
-    } else if (orientacao == 1) {
+    } else if (orientacao == 1) { // vertical
         for(int i = linha; i < linha + 3; i ++){
-            if(linha < 8) {
+            if(linha <= 8) {
                 tabuleiro[i][coluna] == 0 ? tabuleiro[i][coluna] = 3 : printf("Você não pode sobrepor barcos\n\n");
             } else {
                 printf("Valor superior ao tamanho do barco, tente novamente\n\n");
             }
         }
+    } else if (orientacao == 2) { // diagonal direita
+
+
+        for(int i = linha; i < linha + 3; i ++){
+            if(linha <= 8) {
+                tabuleiro[i][coluna] == 0 ? tabuleiro[i][coluna + i] = 3 : printf("Você não pode sobrepor barcos\n\n");
+            } else {
+                printf("Valor superior ao tamanho do barco, tente novamente\n\n");
+            }
+        }
+
+
+    } else if(orientacao == 3){ // diagonal esquerda
+
+
+        for(int i = linha; i < linha + 3; i ++){
+            if(linha <= 8) {
+                tabuleiro[i][coluna] == 0 ? tabuleiro[i][coluna - i] = 3 : printf("Você não pode sobrepor barcos\n\n");
+            } else {
+                printf("Valor superior ao tamanho do barco, tente novamente\n\n");
+            }
+        }
+
+
     } else {
         printf("Valor de orientação inválido, digite 0 para horizontal ou 1 para vertical");
     }
@@ -37,6 +61,8 @@ int main() {
 
     posicionaNavio(1, 3, 0);
     posicionaNavio(4, 6, 1);
+    posicionaNavio(2, 5, 2);
+    posicionaNavio(8, 2, 3);
 
     printf("   ");
 
