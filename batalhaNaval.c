@@ -1,11 +1,15 @@
 #include <stdio.h>
 
+#define LINHA 10
+#define COLUNA 10
+
 // Desafio Batalha Naval - MateCheck
 // Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
 // Siga os comentários para implementar cada parte do desafio.
-int tabuleiro[10][10] = {0};
 
-void posicionaNavio(int linha, int coluna, int orientacao) {
+int tabuleiro[LINHA][COLUNA] = {0};
+
+void posicionarNavio(int linha, int coluna, int orientacao) {
     if(orientacao == 0) { // horizontal
         for(int i = coluna; i < coluna + 3; i ++){
            if(coluna <= 8) {
@@ -23,8 +27,6 @@ void posicionaNavio(int linha, int coluna, int orientacao) {
             }
         }
     } else if (orientacao == 2) { // diagonal direita
-
-
         for(int i = linha; i < linha + 3; i ++){
             if(linha <= 8) {
                 tabuleiro[i][coluna] == 0 ? tabuleiro[i][coluna + i] = 3 : printf("Você não pode sobrepor barcos\n\n");
@@ -32,11 +34,7 @@ void posicionaNavio(int linha, int coluna, int orientacao) {
                 printf("Valor superior ao tamanho do barco, tente novamente\n\n");
             }
         }
-
-
     } else if(orientacao == 3){ // diagonal esquerda
-
-
         for(int i = linha; i < linha + 3; i ++){
             if(linha <= 8) {
                 tabuleiro[i][coluna] == 0 ? tabuleiro[i][coluna - i] = 3 : printf("Você não pode sobrepor barcos\n\n");
@@ -44,10 +42,71 @@ void posicionaNavio(int linha, int coluna, int orientacao) {
                 printf("Valor superior ao tamanho do barco, tente novamente\n\n");
             }
         }
-
-
     } else {
         printf("Valor de orientação inválido, digite 0 para horizontal ou 1 para vertical");
+    }
+}
+
+void usarHabilidade(int formato, int linha, int coluna) {
+    // 1 = Cone, formato:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 1 1 1 1 1
+
+    // 2 = Cruz, formato:
+    // 0 0 1 0 0
+    // 1 1 1 1 1
+    // 0 0 1 0 0
+
+    // 3 = Octaedro, formato:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 0 0 1 0 0
+
+    // A área afetada pela habilidade será destacada em números 1
+
+    switch(formato) {
+        case 1:
+            for (int i = linha; i < linha + 3; i++) {
+                tabuleiro[i][coluna] = 1;
+                if(i == linha + 1) {
+                    tabuleiro[i][coluna + 1] = 1; 
+                    tabuleiro[i][coluna - 1] = 1; 
+                }
+                if(i == linha + 2) {
+                    tabuleiro[i][coluna + 1] = 1; 
+                    tabuleiro[i][coluna - 1] = 1;
+                    tabuleiro[i][coluna + 2] = 1; 
+                    tabuleiro[i][coluna - 2] = 1; 
+                }
+            }
+        break;
+
+        case 2:
+            for (int i = linha; i < linha + 3; i++) {
+                tabuleiro[i][coluna] = 1;
+                if(i == linha + 1) {
+                    tabuleiro[i][coluna + 1] = 1; 
+                    tabuleiro[i][coluna - 1] = 1; 
+                    tabuleiro[i][coluna + 2] = 1; 
+                    tabuleiro[i][coluna - 2] = 1;
+                }
+            }
+        break;
+
+        case 3:
+            for (int i = linha; i < linha + 3; i++) {
+                tabuleiro[i][coluna] = 1;
+                if(i == linha + 1) {
+                    tabuleiro[i][coluna + 1] = 1; 
+                    tabuleiro[i][coluna - 1] = 1; 
+                }
+            }
+        break;
+
+        default:
+            printf("Valor de habilidade inválido, tente novamente");
+        break;
     }
 }
 
@@ -57,12 +116,40 @@ int main() {
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
     // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
 
+    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
+    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
+    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
+    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+
+    // Nível Mestre - Habilidades Especiais com Matrizes
+    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
+    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
+    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+
+    // Exemplos de exibição das habilidades:
+    // Exemplo para habilidade em cone:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 1 1 1 1 1
+
+    // Exemplo para habilidade em cruz:
+    // 0 0 1 0 0
+    // 1 1 1 1 1
+    // 0 0 1 0 0
+    
+    // Exemplo para habilidade em octaedro:
+    // 0 0 1 0 0
+    // 0 1 1 1 0
+    // 0 0 1 0 0
+
     char linha[10] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'};
 
-    posicionaNavio(1, 3, 0);
-    posicionaNavio(4, 6, 1);
-    posicionaNavio(2, 5, 2);
-    posicionaNavio(8, 2, 3);
+    posicionarNavio(1, 3, 0);
+    posicionarNavio(4, 6, 1);
+    posicionarNavio(2, 5, 2);
+    posicionarNavio(8, 2, 3);
+
+    usarHabilidade(3, 5, 5);
 
     printf("   ");
 
@@ -82,32 +169,6 @@ int main() {
 
         printf("\n");;
     }
-
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
-
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
-
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
-
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
 
     return 0;
 }
